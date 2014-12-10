@@ -1,12 +1,12 @@
 package fr.pinguet62.jcar;
 
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import fr.pinguet62.jcar.util.LogUtils;
 
 public final class HomeController extends ManagedController {
 
@@ -14,10 +14,15 @@ public final class HomeController extends ManagedController {
             .getLogger(ManagerController.class);
 
     @FXML
-    public void ledMessengerButtonClick(ActionEvent event) throws IOException {
-        LOGGER.trace("ledMessengerButtonClick");
+    public void backupCameraButtonClick() {
+        LOGGER.trace(LogUtils.currentMethod());
+        mainController.showView("/fxml/backupCamera.fxml");
+    }
 
-        mainController.showView("/ledMessenger.fxml");
+    @FXML
+    public void ledMessengerButtonClick(ActionEvent event) {
+        LOGGER.trace(LogUtils.currentMethod());
+        mainController.showView("/fxml/ledMessenger.fxml");
     }
 
 }

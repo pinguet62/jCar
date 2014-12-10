@@ -10,16 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
-
-import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton
 public class ManagerController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory
@@ -51,7 +47,7 @@ public class ManagerController implements Initializable {
      */
     @FXML
     public void back() {
-        LOGGER.debug("Return");
+        LOGGER.trace("Return");
         view.getChildren().remove(view.getChildren().size() - 1);
     }
 
@@ -66,24 +62,37 @@ public class ManagerController implements Initializable {
         };
         view.getChildren().addListener(listener);
 
-        showView("/home.fxml");
+        showView("/fxml/home.fxml");
     }
 
-    protected Parent showView(String fxml) {
+    /**
+     * Show the view in the foreground.
+     *
+     * @param fxml
+     *            The path to the FXML resource file.
+     * @return The new view.
+     */
+    protected Node showView(String fxml) {
+        LOGGER.trace("Load view: " + fxml);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 
-        // Show view
-        Parent futureView;
+        // Generate view
+        Node futureView;
         try {
             futureView = loader.load();
         } catch (IOException e) {
+            // TODO Exception
             throw new RuntimeException(e);
         }
+
+        // Show view
         view.getChildren().add(futureView);
 
         // ManagedController
         ManagedController controller = loader.getController();
-        controller.setMainController(this);
+        if (controller != null)
+            controller.setMainController(this);
 
         return futureView;
     }
