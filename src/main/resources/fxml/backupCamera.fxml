@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.media.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pinguet62.jcar.BackupCameraController">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pinguet62.jcar.backupcamera.BackupCameraController">
    <children>
       <MediaView fx:id="mediaView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>

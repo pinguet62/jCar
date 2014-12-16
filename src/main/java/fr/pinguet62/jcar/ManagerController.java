@@ -2,20 +2,35 @@ package fr.pinguet62.jcar;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.pinguet62.jcar.exception.JCarException;
+import fr.pinguet62.jcar.util.LogUtils;
+
+/**
+ * The main controller used to manage the application.<br>
+ * All sub-view are managed by this controller.
+ */
 public class ManagerController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory
@@ -24,6 +39,12 @@ public class ManagerController implements Initializable {
     /** The {@link Button} used to navigate between screens. */
     @FXML
     private Button back;
+
+    @FXML
+    private Label clock;
+
+    /** Keep reference to each controller, to execute some actions on views. */
+    private final Deque<ManagedController> controllers = new LinkedList<>();
 
     /**
      * The layout on center of screen.
@@ -34,26 +55,30 @@ public class ManagerController implements Initializable {
     @FXML
     private StackPane view;
 
-    // TODO test
-    @FXML
-    public void addElement(ActionEvent event) {
-        view.getChildren().add(new Button("toto"));
-    }
-
     /**
-     * Return to the previous screen.
-     * <p>
      * Handler for {@link #back} {@link Button} click.
+     * <p>
+     * Return to the previous screen.<br>
+     * Call {@link ManagedController#onClose()} during return.
      */
     @FXML
     public void back() {
-        LOGGER.trace("Return");
-        view.getChildren().remove(view.getChildren().size() - 1);
+        LOGGER.trace(LogUtils.currentMethod());
+
+        // Controller
+        ManagedController controller = controllers.getLast();
+        if (controller != null)
+            controller.onClose();
+
+        int index = view.getChildren().size() - 1;
+        // Remove
+        view.getChildren().remove(index);
+        controllers.removeLast();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        LOGGER.debug("initialize");
+        LOGGER.trace(LogUtils.currentMethod());
 
         // Enable back button if the user is not on the home screen
         ListChangeListener<Node> listener = change -> {
@@ -61,6 +86,14 @@ public class ManagerController implements Initializable {
             back.setDisable(change.getList().size() == 1);
         };
         view.getChildren().addListener(listener);
+
+        // Clock
+        // 0,5 sec
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500),
+                ae -> clock.setText(new SimpleDateFormat("hh:mm:ss")
+                .format(Calendar.getInstance().getTime()))));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
 
         showView("/fxml/home.fxml");
     }
@@ -77,22 +110,20 @@ public class ManagerController implements Initializable {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 
-        // Generate view
+        // View
         Node futureView;
         try {
             futureView = loader.load();
         } catch (IOException e) {
-            // TODO Exception
-            throw new RuntimeException(e);
+            throw new JCarException(e);
         }
-
-        // Show view
         view.getChildren().add(futureView);
 
-        // ManagedController
+        // Controller
         ManagedController controller = loader.getController();
         if (controller != null)
             controller.setMainController(this);
+        controllers.addLast(controller);
 
         return futureView;
     }

@@ -11,4 +11,5 @@
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="fr.pinguet62.jcar.HomeController">
 	<Button text="LED Messenger" onAction="#ledMessengerButtonClick" />
     <Button text="Backup camera" onAction="#backupCameraButtonClick" />
+    <Button text="Backup camera 2" onAction="#backupCamera2ButtonClick" />
 </VBox>

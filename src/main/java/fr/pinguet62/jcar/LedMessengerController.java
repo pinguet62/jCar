@@ -10,4 +10,10 @@ public final class LedMessengerController extends ManagedController {
         System.out.println("Bonjour !");
     }
 
+    @Override
+    public void onClose() {
+        System.out.println("onClose()");
+        super.onClose();
+    }
+
 }

@@ -1,9 +1,11 @@
-package fr.pinguet62.jcar;
+package fr.pinguet62.jcar.backupcamera;
 
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fr.pinguet62.jcar.ManagedController;
+import fr.pinguet62.jcar.exception.JCarException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
@@ -11,6 +13,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
+// JMFDIR = C:\Program Files (x86)\JMF2.1.1e
+// PATH = %PATH%;%JMFDIR%\lib
 public final class BackupCameraController extends ManagedController implements
 Initializable {
 
@@ -33,8 +37,8 @@ Initializable {
             mediaPlayer.play();
 
             System.out.println(mediaPlayer);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        } catch (URISyntaxException exception) {
+            throw new JCarException(exception);
         }
     }
 

@@ -14,6 +14,12 @@ public final class HomeController extends ManagedController {
             .getLogger(ManagerController.class);
 
     @FXML
+    public void backupCamera2ButtonClick() {
+        LOGGER.trace(LogUtils.currentMethod());
+        mainController.showView("/fxml/backupCamera2.fxml");
+    }
+
+    @FXML
     public void backupCameraButtonClick() {
         LOGGER.trace(LogUtils.currentMethod());
         mainController.showView("/fxml/backupCamera.fxml");
