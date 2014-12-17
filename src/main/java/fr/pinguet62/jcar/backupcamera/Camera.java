@@ -17,7 +17,7 @@ import javax.media.control.FrameGrabbingControl;
 import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
 
-import fr.pinguet62.jcar.exception.JCarException;
+import fr.pinguet62.jcar.exceptions.JCarException;
 
 public final class Camera {
 

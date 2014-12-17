@@ -1,45 +1,72 @@
 package fr.pinguet62.jcar.backupcamera;
 
-import java.net.URISyntaxException;
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import fr.pinguet62.jcar.ManagedController;
-import fr.pinguet62.jcar.exception.JCarException;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
 // JMFDIR = C:\Program Files (x86)\JMF2.1.1e
 // PATH = %PATH%;%JMFDIR%\lib
 public final class BackupCameraController extends ManagedController implements
 Initializable {
 
+    // private static final Logger LOGGER = LoggerFactory
+    // .getLogger(ManagerController.class);
+
     @FXML
-    private MediaView mediaView;
+    private ImageView imageView;
+
+    private Timeline timeline;
+
+    @Override
+    protected void finalize() throws Throwable {
+        System.err.println("finalize");
+        super.finalize();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            Media media = new Media(getClass().getResource("/vidéo.mp4")
-                    .toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaView.setMediaPlayer(mediaPlayer);
+        // XXX La vue ne se réduit pas si la fenêtre se réduit
+        AnchorPane anchorPane = (AnchorPane) imageView.getParent();
+        imageView.fitHeightProperty().bind(anchorPane.heightProperty());
+        imageView.fitWidthProperty().bind(anchorPane.widthProperty());
 
-            // XXX La vue ne se réduit pas si la fenêtre se réduit
-            AnchorPane anchorPane = (AnchorPane) mediaView.getParent();
-            mediaView.fitHeightProperty().bind(anchorPane.heightProperty());
-            mediaView.fitWidthProperty().bind(anchorPane.widthProperty());
+        timeline = new Timeline(new KeyFrame(Duration.millis(1000),
+                ae -> showImage()));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
-            mediaPlayer.play();
+    @Override
+    public void onClose() {
+        timeline.stop();
 
-            System.out.println(mediaPlayer);
-        } catch (URISyntaxException exception) {
-            throw new JCarException(exception);
+        super.onClose();
+    }
+
+    private void showImage() {
+        // Get
+        byte[] bytes = Camera.getInstance().getImage();
+        System.err.println(bytes);
+        if (bytes == null) {
+            System.err.println("No image");
+            return;
         }
+
+        // Show
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        Image image = new Image(inputStream);
+        imageView.setImage(image);
     }
 
 }

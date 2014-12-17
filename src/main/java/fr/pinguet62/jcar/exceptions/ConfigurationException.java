@@ -1,4 +1,4 @@
-package fr.pinguet62.jcar.exception;
+package fr.pinguet62.jcar.exceptions;
 
 public class ConfigurationException extends JCarException {
 

@@ -24,7 +24,7 @@ import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.pinguet62.jcar.exception.JCarException;
+import fr.pinguet62.jcar.exceptions.JCarException;
 import fr.pinguet62.jcar.util.LogUtils;
 
 /**

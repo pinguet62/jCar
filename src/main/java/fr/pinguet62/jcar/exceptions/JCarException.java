@@ -1,4 +1,4 @@
-package fr.pinguet62.jcar.exception;
+package fr.pinguet62.jcar.exceptions;
 
 /** The base {@link RuntimeException} for this project. */
 public class JCarException extends RuntimeException {
