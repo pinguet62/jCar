@@ -6,19 +6,25 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import fr.pinguet62.jcar.exceptions.JCarException;
 
-// JMFDIR = C:\Program Files (x86)\JMF2.1.1e
-// PATH = %PATH%;%JMFDIR%\lib
 public final class VideoController extends ManagedController implements
         Initializable {
 
     @FXML
     private MediaView mediaView;
+
+    @FXML
+    private Button playPause;
+
+    @FXML
+    private Slider progress;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

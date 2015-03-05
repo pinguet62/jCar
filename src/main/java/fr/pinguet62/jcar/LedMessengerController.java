@@ -11,9 +11,9 @@ public final class LedMessengerController extends ManagedController {
     }
 
     @Override
-    public void onClose() {
+    public void close() {
         System.out.println("onClose()");
-        super.onClose();
+        super.close();
     }
 
 }

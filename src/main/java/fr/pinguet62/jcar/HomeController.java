@@ -20,6 +20,12 @@ public final class HomeController extends ManagedController {
     }
 
     @FXML
+    public void camerasButtonClick() {
+        LOGGER.trace(LogUtils.currentMethod());
+        mainController.showView("/fxml/cameras.fxml");
+    }
+
+    @FXML
     public void ledMessengerButtonClick(ActionEvent event) {
         LOGGER.trace(LogUtils.currentMethod());
         mainController.showView("/fxml/ledMessenger.fxml");

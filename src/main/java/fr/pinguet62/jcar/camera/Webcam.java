@@ -1,4 +1,4 @@
-package fr.pinguet62.jcar.backupcamera;
+package fr.pinguet62.jcar.camera;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -19,17 +19,20 @@ import javax.media.util.BufferToImage;
 
 import fr.pinguet62.jcar.exceptions.JCarException;
 
-public final class Camera {
+//JMFDIR = C:\Program Files (x86)\JMF2.1.1e
+//PATH = %PATH%;%JMFDIR%\lib
 
-    private static final Camera instance = new Camera();
+public final class Webcam implements ICamera {
 
-    public static Camera getInstance() {
+    private static final Webcam instance = new Webcam();
+
+    public static Webcam getInstance() {
         return instance;
     }
 
     private final Player player;
 
-    private Camera() {
+    private Webcam() {
         CaptureDeviceInfo info = CaptureDeviceManager
                 .getDevice("vfw:Microsoft WDM Image Capture (Win32):0");
         MediaLocator mediaLocator = info.getLocator();
@@ -47,7 +50,8 @@ public final class Camera {
         player.deallocate();
     };
 
-    public byte[] getImage() {
+    @Override
+    public byte[] get() {
         FrameGrabbingControl frameGrabbingControl = (FrameGrabbingControl) player
                 .getControl("javax.media.control.FrameGrabbingControl");
         Buffer buffer = frameGrabbingControl.grabFrame();

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pinguet62.jcar.backupcamera.CamerasController">
+   <children>
+      <ImageView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../car.png" />
+         </image>
+      </ImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="frontRightCamera" layoutX="65.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="frontCamera" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="45.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="rearRightCamera" layoutX="300.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="frontLeftCamera" layoutX="65.0" AnchorPane.bottomAnchor="0.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="rearLeftCamera" layoutX="300.0" AnchorPane.bottomAnchor="0.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+      <fr.pinguet62.jcar.backupcamera.ZoomableImageView fx:id="rearCamera" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+         <image>
+            <Image url="@../camera_default.png" />
+         </image>
+      </fr.pinguet62.jcar.backupcamera.ZoomableImageView>
+   </children>
+</AnchorPane>

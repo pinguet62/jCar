@@ -1,14 +1,22 @@
 package fr.pinguet62.jcar;
 
-public abstract class ManagedController {
+import java.io.Closeable;
+
+public abstract class ManagedController implements Closeable {
 
     protected ManagerController mainController;
 
-    /** Override this method to execute code when this view is hidden. */
-    public void onClose() {
+    /**
+     * Override this method to execute code when this view is hidden.
+     * <p>
+     * Don't forgot the call super method {@code super.close()} at end of
+     * overridden methods.
+     */
+    @Override
+    public void close() {
     }
 
-    public void setMainController(ManagerController controller) {
+    void setMainController(ManagerController controller) {
         mainController = controller;
     }
 

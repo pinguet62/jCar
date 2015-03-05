@@ -1,10 +1,10 @@
 package fr.pinguet62.jcar.backupcamera;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import fr.pinguet62.jcar.ManagedController;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,13 +15,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-// JMFDIR = C:\Program Files (x86)\JMF2.1.1e
-// PATH = %PATH%;%JMFDIR%\lib
-public final class BackupCameraController extends ManagedController implements
-Initializable {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    // private static final Logger LOGGER = LoggerFactory
-    // .getLogger(ManagerController.class);
+import fr.pinguet62.jcar.ManagedController;
+import fr.pinguet62.jcar.camera.Webcam;
+
+public final class BackupCameraController extends ManagedController implements
+        Initializable {
+
+    // TODO FPS to config file
+    private static final int FPS = 1;
+
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(BackupCameraController.class);
 
     @FXML
     private ImageView imageView;
@@ -29,43 +36,45 @@ Initializable {
     private Timeline timeline;
 
     @Override
+    public void close() {
+        LOGGER.debug("Stopping scheduler");
+        timeline.stop();
+
+        super.close();
+    }
+
+    @Override
     protected void finalize() throws Throwable {
-        System.err.println("finalize");
+        System.out.println("finalize");
         super.finalize();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // XXX La vue ne se réduit pas si la fenêtre se réduit
+        // FIXME La vue ne se réduit pas si la fenêtre se réduit
         AnchorPane anchorPane = (AnchorPane) imageView.getParent();
         imageView.fitHeightProperty().bind(anchorPane.heightProperty());
         imageView.fitWidthProperty().bind(anchorPane.widthProperty());
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(1000),
-                ae -> showImage()));
+        double intervalle = 1.0 / FPS;
+        LOGGER.info("Frequence: " + FPS + "ips, intervalle of " + intervalle
+                + "s");
+        timeline = new Timeline(new KeyFrame(Duration.seconds(intervalle),
+                ae -> refresh()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    @Override
-    public void onClose() {
-        timeline.stop();
+    void refresh() {
+        byte[] bytes = Webcam.getInstance().get();
 
-        super.onClose();
-    }
+        InputStream is;
+        if (bytes == null)
+            is = getClass().getResourceAsStream("/camera_default.png");
+        else
+            is = new ByteArrayInputStream(bytes);
 
-    private void showImage() {
-        // Get
-        byte[] bytes = Camera.getInstance().getImage();
-        System.err.println(bytes);
-        if (bytes == null) {
-            System.err.println("No image");
-            return;
-        }
-
-        // Show
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        Image image = new Image(inputStream);
+        Image image = new Image(is);
         imageView.setImage(image);
     }
 

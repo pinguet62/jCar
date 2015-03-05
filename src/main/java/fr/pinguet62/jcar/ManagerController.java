@@ -68,7 +68,7 @@ public class ManagerController implements Initializable {
         // Controller
         ManagedController controller = controllers.getLast();
         if (controller != null)
-            controller.onClose();
+            controller.close();
 
         int index = view.getChildren().size() - 1;
         // Remove
